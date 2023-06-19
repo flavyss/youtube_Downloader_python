@@ -1,39 +1,51 @@
 import tkinter as tk
 from tkinter import filedialog
 from pytube import YouTube
+import moviepy.editor as mp
 
 def download_video():
-    # Pega o link do vídeo do YouTube
     link = link_entry.get()
-
-    # Faz o download do vídeo em formato MP4
     yt = YouTube(link)
-    video = yt.streams.filter(mime_type='video/mp4').first()
 
-    # Exibe a janela de diálogo para escolher o diretório de destino
-    filepath = filedialog.askdirectory()
+    file_type = file_type_var.get()
 
-    # Faz o download do vídeo para o diretório escolhido
-    video.download(filepath)
+    if file_type == "mp4":
+        video = yt.streams.filter(mime_type='video/mp4').first()
+        filepath = filedialog.askdirectory()
+        video.download(filepath)
+        label['text'] = "O vídeo foi baixado Meu Cria"
+    elif file_type == "mp3":
+        audio = yt.streams.filter(only_audio=True).first()
+        filepath = filedialog.askdirectory()
+        audio.download(filepath)
 
-    # Exibe uma mensagem de sucesso
-    label['text'] = "O vídeo foi baixado com sucesso!"
+        video_title = yt.title
+        video_filename = audio.default_filename
+        mp4_filepath = filepath + "/" + video_filename
+        mp3_filepath = filepath + "/" + video_title + ".mp3"
+        os.rename(mp4_filepath, mp3_filepath)
 
-# Cria a janela principal
+        label['text'] = "O áudio foi baixado meu cria"
+
 root = tk.Tk()
-root.title("Baixador de vídeos do YouTube")
+root.title("KripTube - o Brabo")
 
-# Cria um campo de entrada para o link do vídeo
+banner_label = tk.Label(root, text="K.R.I.P.T.U.B.E", font=("Arial", 30, "bold"))
+banner_label.pack()
+made_by_label = tk.Label(root, text="Feito por Flavyson Felipe", font=("Arial", 12))
+made_by_label.pack()
+
 link_entry = tk.Entry(root, width=60)
 link_entry.pack()
 
-# Cria um botão para iniciar o download
+file_type_var = tk.StringVar()
+mp4_radio = tk.Radiobutton(root, text="MP4", variable=file_type_var, value="mp4")
+mp4_radio.pack()
+mp3_radio = tk.Radiobutton(root, text="MP3", variable=file_type_var, value="mp3")
+mp3_radio.pack()
+
 button = tk.Button(root, text="Baixar", command=download_video)
 button.pack()
-
-# Cria uma etiqueta para exibir mensagens
 label = tk.Label(root, text="")
 label.pack()
-
-# Inicia o loop principal da interface gráfica
 root.mainloop()
