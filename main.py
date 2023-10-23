@@ -13,7 +13,7 @@ def download_video():
         video = yt.streams.filter(mime_type='video/mp4').first()
         filepath = filedialog.askdirectory()
         video.download(filepath)
-        label['text'] = "O vídeo foi baixado Meu Cria"
+        label['text'] = "O vídeo foi baixado"
     elif file_type == "mp3":
         audio = yt.streams.filter(only_audio=True).first()
         filepath = filedialog.askdirectory()
@@ -25,12 +25,12 @@ def download_video():
         mp3_filepath = filepath + "/" + video_title + ".mp3"
         os.rename(mp4_filepath, mp3_filepath)
 
-        label['text'] = "O áudio foi baixado meu cria"
+        label['text'] = "O áudio foi baixado"
 
 root = tk.Tk()
 root.title("KripTube - o Brabo")
 
-banner_label = tk.Label(root, text="K.R.I.P.T.U.B.E", font=("Arial", 30, "bold"))
+banner_label = tk.Label(root, text="F.L.A.V.Y.T.U.B.E", font=("Arial", 30, "bold"))
 banner_label.pack()
 made_by_label = tk.Label(root, text="Feito por Flavyson Felipe", font=("Arial", 12))
 made_by_label.pack()
